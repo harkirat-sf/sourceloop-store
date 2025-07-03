@@ -5,9 +5,9 @@
   "scripts": {
     "prepare": "husky install",
     "test": "lerna run test",
-     "migrate": "npm run db:migrate --workspaces --if-present",
-     "build": "npm run build --workspaces --if-present",
-     "github:coverage": "lerna run coverage --concurrency=2",
+    "migrate": "npm run db:migrate --workspaces --if-present",
+    "build": "npm run build --workspaces --if-present",
+    "github:coverage": "lerna run coverage --concurrency=2",
     "coverage:combined": "node coverage.js && nyc report --reporter html"
   },
   "devDependencies": {
@@ -22,15 +22,22 @@
     "nyc": "^15.1.0",
     "run-s": "^0.0.0"
   },
-  "workspaces":["packages/*", "services/*", "facades/*"],
-  "overrides":{
-    "@commitlint/config-lerna-scopes":{
-      "lerna":"^7.3.0"
+  "workspaces": [
+    "packages/*",
+    "services/*",
+    "facades/*"
+  ],
+  "overrides": {
+    "@commitlint/config-lerna-scopes": {
+      "lerna": "^7.3.0"
     }
   },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-customizable"
     }
+  },
+  "dependencies": {
+    "mochawesome": "^7.1.3"
   }
 }
