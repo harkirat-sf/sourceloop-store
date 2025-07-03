@@ -1,0 +1,1472 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "order-service",
+    "version": "1.0.0",
+    "description": "order-service",
+    "contact": {
+      "name": "Harkirat",
+      "email": "harkirat.singh@sourcefuse.com"
+    }
+  },
+  "paths": {
+    "/order-items/count": {
+      "get": {
+        "x-controller-name": "OrderItemsController",
+        "x-operation-name": "count",
+        "tags": [
+          "OrderItemsController"
+        ],
+        "responses": {
+          "200": {
+            "description": "OrderItem model count",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/loopback.Count"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "where",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "order_items.WhereFilter",
+                  "additionalProperties": true,
+                  "x-typescript-type": "@loopback/repository#Where<OrderItem>"
+                }
+              }
+            }
+          }
+        ],
+        "operationId": "OrderItemsController.count"
+      }
+    },
+    "/order-items/{id}": {
+      "put": {
+        "x-controller-name": "OrderItemsController",
+        "x-operation-name": "replaceById",
+        "tags": [
+          "OrderItemsController"
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "OrderItem PUT success"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "number"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderItem"
+              }
+            }
+          },
+          "x-parameter-index": 1
+        },
+        "operationId": "OrderItemsController.replaceById"
+      },
+      "patch": {
+        "x-controller-name": "OrderItemsController",
+        "x-operation-name": "updateById",
+        "tags": [
+          "OrderItemsController"
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "OrderItem PATCH success"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "number"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderItemPartial"
+              }
+            }
+          },
+          "x-parameter-index": 1
+        },
+        "operationId": "OrderItemsController.updateById"
+      },
+      "get": {
+        "x-controller-name": "OrderItemsController",
+        "x-operation-name": "findById",
+        "tags": [
+          "OrderItemsController"
+        ],
+        "responses": {
+          "200": {
+            "description": "OrderItem model instance",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderItemWithRelations"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "number"
+            },
+            "required": true
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/order_items.Filter"
+                }
+              }
+            }
+          }
+        ],
+        "operationId": "OrderItemsController.findById"
+      },
+      "delete": {
+        "x-controller-name": "OrderItemsController",
+        "x-operation-name": "deleteById",
+        "tags": [
+          "OrderItemsController"
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "OrderItem DELETE success"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "number"
+            },
+            "required": true
+          }
+        ],
+        "operationId": "OrderItemsController.deleteById"
+      }
+    },
+    "/order-items": {
+      "post": {
+        "x-controller-name": "OrderItemsController",
+        "x-operation-name": "create",
+        "tags": [
+          "OrderItemsController"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OrderItem model instance",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderItem"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewOrderItem"
+              }
+            }
+          }
+        },
+        "operationId": "OrderItemsController.create"
+      },
+      "patch": {
+        "x-controller-name": "OrderItemsController",
+        "x-operation-name": "updateAll",
+        "tags": [
+          "OrderItemsController"
+        ],
+        "responses": {
+          "200": {
+            "description": "OrderItem PATCH success count",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/loopback.Count"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "where",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "order_items.WhereFilter",
+                  "additionalProperties": true,
+                  "x-typescript-type": "@loopback/repository#Where<OrderItem>"
+                }
+              }
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderItemPartial"
+              }
+            }
+          }
+        },
+        "operationId": "OrderItemsController.updateAll"
+      },
+      "get": {
+        "x-controller-name": "OrderItemsController",
+        "x-operation-name": "find",
+        "tags": [
+          "OrderItemsController"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Array of OrderItem model instances",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OrderItemWithRelations"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/order_items.Filter1"
+                }
+              }
+            }
+          }
+        ],
+        "operationId": "OrderItemsController.find"
+      }
+    },
+    "/orders/count": {
+      "get": {
+        "x-controller-name": "OrderController",
+        "x-operation-name": "count",
+        "tags": [
+          "OrderController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Order model count",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/loopback.Count"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "where",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "orders.WhereFilter",
+                  "additionalProperties": true,
+                  "x-typescript-type": "@loopback/repository#Where<Order>"
+                }
+              }
+            }
+          }
+        ],
+        "operationId": "OrderController.count"
+      }
+    },
+    "/orders/{id}/order-items": {
+      "post": {
+        "x-controller-name": "OrderOrderItemController",
+        "x-operation-name": "create",
+        "tags": [
+          "OrderOrderItemController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Order model instance",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderItem"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "number"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewOrderItemInOrder"
+              }
+            }
+          },
+          "x-parameter-index": 1
+        },
+        "operationId": "OrderOrderItemController.create"
+      },
+      "patch": {
+        "x-controller-name": "OrderOrderItemController",
+        "x-operation-name": "patch",
+        "tags": [
+          "OrderOrderItemController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Order.OrderItem PATCH success count",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/loopback.Count"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "number"
+            },
+            "required": true
+          },
+          {
+            "name": "where",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "order_items.WhereFilter",
+                  "additionalProperties": true,
+                  "x-typescript-type": "@loopback/repository#Where<OrderItem>"
+                }
+              }
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderItemPartial"
+              }
+            }
+          },
+          "x-parameter-index": 1
+        },
+        "operationId": "OrderOrderItemController.patch"
+      },
+      "get": {
+        "x-controller-name": "OrderOrderItemController",
+        "x-operation-name": "find",
+        "tags": [
+          "OrderOrderItemController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of Order has many OrderItem",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OrderItem"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "number"
+            },
+            "required": true
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        ],
+        "operationId": "OrderOrderItemController.find"
+      },
+      "delete": {
+        "x-controller-name": "OrderOrderItemController",
+        "x-operation-name": "delete",
+        "tags": [
+          "OrderOrderItemController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Order.OrderItem DELETE success count",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/loopback.Count"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "number"
+            },
+            "required": true
+          },
+          {
+            "name": "where",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "order_items.WhereFilter",
+                  "additionalProperties": true,
+                  "x-typescript-type": "@loopback/repository#Where<OrderItem>"
+                }
+              }
+            }
+          }
+        ],
+        "operationId": "OrderOrderItemController.delete"
+      }
+    },
+    "/orders/{id}": {
+      "put": {
+        "x-controller-name": "OrderController",
+        "x-operation-name": "replaceById",
+        "tags": [
+          "OrderController"
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Order PUT success"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "number"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Order"
+              }
+            }
+          },
+          "x-parameter-index": 1
+        },
+        "operationId": "OrderController.replaceById"
+      },
+      "patch": {
+        "x-controller-name": "OrderController",
+        "x-operation-name": "updateById",
+        "tags": [
+          "OrderController"
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Order PATCH success"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "number"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderPartial"
+              }
+            }
+          },
+          "x-parameter-index": 1
+        },
+        "operationId": "OrderController.updateById"
+      },
+      "get": {
+        "x-controller-name": "OrderController",
+        "x-operation-name": "findById",
+        "tags": [
+          "OrderController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Order model instance",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderWithRelations"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "number"
+            },
+            "required": true
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/orders.Filter"
+                }
+              }
+            }
+          }
+        ],
+        "operationId": "OrderController.findById"
+      },
+      "delete": {
+        "x-controller-name": "OrderController",
+        "x-operation-name": "deleteById",
+        "tags": [
+          "OrderController"
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Order DELETE success"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "number"
+            },
+            "required": true
+          }
+        ],
+        "operationId": "OrderController.deleteById"
+      }
+    },
+    "/orders": {
+      "post": {
+        "x-controller-name": "OrderController",
+        "x-operation-name": "create",
+        "tags": [
+          "OrderController"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Order model instance",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewOrder"
+              }
+            }
+          }
+        },
+        "operationId": "OrderController.create"
+      },
+      "patch": {
+        "x-controller-name": "OrderController",
+        "x-operation-name": "updateAll",
+        "tags": [
+          "OrderController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Order PATCH success count",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/loopback.Count"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "where",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "orders.WhereFilter",
+                  "additionalProperties": true,
+                  "x-typescript-type": "@loopback/repository#Where<Order>"
+                }
+              }
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderPartial"
+              }
+            }
+          }
+        },
+        "operationId": "OrderController.updateAll"
+      },
+      "get": {
+        "x-controller-name": "OrderController",
+        "x-operation-name": "find",
+        "tags": [
+          "OrderController"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Array of Order model instances",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OrderWithRelations"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/orders.Filter1"
+                }
+              }
+            }
+          }
+        ],
+        "operationId": "OrderController.find"
+      }
+    },
+    "/ping": {
+      "get": {
+        "x-controller-name": "PingController",
+        "x-operation-name": "ping",
+        "tags": [
+          "PingController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Ping Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PingResponse"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "operationId": "PingController.ping"
+      }
+    },
+    "/": {
+      "get": {
+        "x-controller-name": "HomePageController",
+        "x-operation-name": "homePage",
+        "tags": [
+          "HomePageController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Home Page",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "operationId": "HomePageController.homePage"
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "HTTPBearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "Order": {
+        "title": "Order",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "userId": {
+            "type": "number"
+          },
+          "status": {
+            "type": "string"
+          },
+          "totalPrice": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "status"
+        ],
+        "additionalProperties": false
+      },
+      "NewOrder": {
+        "title": "NewOrder",
+        "type": "object",
+        "description": "(tsType: Omit<Order, 'id'>, schemaOptions: { title: 'NewOrder', exclude: [ 'id' ] })",
+        "properties": {
+          "userId": {
+            "type": "number"
+          },
+          "status": {
+            "type": "string"
+          },
+          "totalPrice": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "status"
+        ],
+        "additionalProperties": false,
+        "x-typescript-type": "Omit<Order, 'id'>"
+      },
+      "OrderItemWithRelations": {
+        "title": "OrderItemWithRelations",
+        "type": "object",
+        "description": "(tsType: OrderItemWithRelations, schemaOptions: { includeRelations: true })",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "orderId": {
+            "type": "number"
+          },
+          "productId": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false,
+        "x-typescript-type": "OrderItemWithRelations"
+      },
+      "OrderWithRelations": {
+        "title": "OrderWithRelations",
+        "type": "object",
+        "description": "(tsType: OrderWithRelations, schemaOptions: { includeRelations: true })",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "userId": {
+            "type": "number"
+          },
+          "status": {
+            "type": "string"
+          },
+          "totalPrice": {
+            "type": "number"
+          },
+          "orderItems": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderItemWithRelations"
+            }
+          },
+          "foreignKey": {}
+        },
+        "required": [
+          "status"
+        ],
+        "additionalProperties": false,
+        "x-typescript-type": "OrderWithRelations"
+      },
+      "OrderPartial": {
+        "title": "OrderPartial",
+        "type": "object",
+        "description": "(tsType: Partial<Order>, schemaOptions: { partial: true })",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "userId": {
+            "type": "number"
+          },
+          "status": {
+            "type": "string"
+          },
+          "totalPrice": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false,
+        "x-typescript-type": "Partial<Order>"
+      },
+      "OrderItem": {
+        "title": "OrderItem",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "orderId": {
+            "type": "number"
+          },
+          "productId": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false
+      },
+      "NewOrderItemInOrder": {
+        "title": "NewOrderItemInOrder",
+        "type": "object",
+        "description": "(tsType: @loopback/repository-json-schema#Optional<Omit<OrderItem, 'id'>, 'orderId'>, schemaOptions: { title: 'NewOrderItemInOrder', exclude: [ 'id' ], optional: [ 'orderId' ] })",
+        "properties": {
+          "orderId": {
+            "type": "number"
+          },
+          "productId": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false,
+        "x-typescript-type": "@loopback/repository-json-schema#Optional<Omit<OrderItem, 'id'>, 'orderId'>"
+      },
+      "OrderItemPartial": {
+        "title": "OrderItemPartial",
+        "type": "object",
+        "description": "(tsType: Partial<OrderItem>, schemaOptions: { partial: true })",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "orderId": {
+            "type": "number"
+          },
+          "productId": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false,
+        "x-typescript-type": "Partial<OrderItem>"
+      },
+      "NewOrderItem": {
+        "title": "NewOrderItem",
+        "type": "object",
+        "description": "(tsType: Omit<OrderItem, 'id'>, schemaOptions: { title: 'NewOrderItem', exclude: [ 'id' ] })",
+        "properties": {
+          "orderId": {
+            "type": "number"
+          },
+          "productId": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false,
+        "x-typescript-type": "Omit<OrderItem, 'id'>"
+      },
+      "loopback.Count": {
+        "type": "object",
+        "title": "loopback.Count",
+        "x-typescript-type": "@loopback/repository#Count",
+        "properties": {
+          "count": {
+            "type": "number"
+          }
+        }
+      },
+      "order_items.Filter": {
+        "type": "object",
+        "title": "order_items.Filter",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 100
+          },
+          "skip": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "order": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "fields": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "boolean"
+                  },
+                  "orderId": {
+                    "type": "boolean"
+                  },
+                  "productId": {
+                    "type": "boolean"
+                  }
+                },
+                "additionalProperties": false
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "id",
+                    "orderId",
+                    "productId"
+                  ],
+                  "example": "id"
+                },
+                "uniqueItems": true
+              }
+            ],
+            "title": "order_items.Fields"
+          }
+        },
+        "additionalProperties": false,
+        "x-typescript-type": "@loopback/repository#Filter<OrderItem>"
+      },
+      "order_items.Filter1": {
+        "type": "object",
+        "title": "order_items.Filter",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 100
+          },
+          "skip": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "order": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "where": {
+            "title": "order_items.WhereFilter",
+            "type": "object",
+            "additionalProperties": true
+          },
+          "fields": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "boolean"
+                  },
+                  "orderId": {
+                    "type": "boolean"
+                  },
+                  "productId": {
+                    "type": "boolean"
+                  }
+                },
+                "additionalProperties": false
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "id",
+                    "orderId",
+                    "productId"
+                  ],
+                  "example": "id"
+                },
+                "uniqueItems": true
+              }
+            ],
+            "title": "order_items.Fields"
+          }
+        },
+        "additionalProperties": false,
+        "x-typescript-type": "@loopback/repository#Filter<OrderItem>"
+      },
+      "orders.ScopeFilter": {
+        "type": "object",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 100
+          },
+          "skip": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "order": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "where": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "fields": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": true
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "uniqueItems": true
+              }
+            ]
+          },
+          "include": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": true
+            }
+          }
+        },
+        "additionalProperties": false,
+        "title": "orders.ScopeFilter"
+      },
+      "orders.IncludeFilter.Items": {
+        "title": "orders.IncludeFilter.Items",
+        "type": "object",
+        "properties": {
+          "relation": {
+            "type": "string",
+            "enum": [
+              "orderItems"
+            ]
+          },
+          "scope": {
+            "$ref": "#/components/schemas/orders.ScopeFilter"
+          }
+        }
+      },
+      "orders.Filter": {
+        "type": "object",
+        "title": "orders.Filter",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 100
+          },
+          "skip": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "order": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "fields": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "boolean"
+                  },
+                  "userId": {
+                    "type": "boolean"
+                  },
+                  "status": {
+                    "type": "boolean"
+                  },
+                  "totalPrice": {
+                    "type": "boolean"
+                  }
+                },
+                "additionalProperties": false
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "id",
+                    "userId",
+                    "status",
+                    "totalPrice"
+                  ],
+                  "example": "id"
+                },
+                "uniqueItems": true
+              }
+            ],
+            "title": "orders.Fields"
+          },
+          "include": {
+            "title": "orders.IncludeFilter",
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/orders.IncludeFilter.Items"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        "additionalProperties": false,
+        "x-typescript-type": "@loopback/repository#Filter<Order>"
+      },
+      "orders.Filter1": {
+        "type": "object",
+        "title": "orders.Filter",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 100
+          },
+          "skip": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "order": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "where": {
+            "title": "orders.WhereFilter",
+            "type": "object",
+            "additionalProperties": true
+          },
+          "fields": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "boolean"
+                  },
+                  "userId": {
+                    "type": "boolean"
+                  },
+                  "status": {
+                    "type": "boolean"
+                  },
+                  "totalPrice": {
+                    "type": "boolean"
+                  }
+                },
+                "additionalProperties": false
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "id",
+                    "userId",
+                    "status",
+                    "totalPrice"
+                  ],
+                  "example": "id"
+                },
+                "uniqueItems": true
+              }
+            ],
+            "title": "orders.Fields"
+          },
+          "include": {
+            "title": "orders.IncludeFilter",
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/orders.IncludeFilter.Items"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        "additionalProperties": false,
+        "x-typescript-type": "@loopback/repository#Filter<Order>"
+      },
+      "PingResponse": {
+        "type": "object",
+        "title": "PingResponse",
+        "properties": {
+          "greeting": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "headers": {
+            "type": "object",
+            "properties": {
+              "Content-Type": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": true
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+import {inject, Getter} from '@loopback/core';
+import {DefaultCrudRepository, repository, HasManyRepositoryFactory} from '@loopback/repository';
+import {PgDataSource} from '../datasources';
+import {Order, OrderRelations, OrderItem} from '../models';
+import {OrderItemRepository} from './order-item.repository';
+
+export class OrderRepository extends DefaultCrudRepository<
+  Order,
+  typeof Order.prototype.id,
+  OrderRelations
+> {
+
+  public readonly orderItems: HasManyRepositoryFactory<OrderItem, typeof Order.prototype.id>;
+
+  constructor(
+    @inject('datasources.pg') dataSource: PgDataSource, @repository.getter('OrderItemRepository') protected orderItemRepositoryGetter: Getter<OrderItemRepository>,
+  ) {
+    super(Order, dataSource);
+    this.orderItems = this.createHasManyRepositoryFactoryFor('orderItems', orderItemRepositoryGetter,);
+    this.registerInclusionResolver('orderItems', this.orderItems.inclusionResolver);
+  }
+}

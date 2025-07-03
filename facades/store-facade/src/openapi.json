@@ -1,0 +1,144 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "store-facade",
+    "version": "1.0.0",
+    "description": "store-facade",
+    "contact": {
+      "name": "Harkirat",
+      "email": "harkirat.singh@sourcefuse.com"
+    }
+  },
+  "paths": {
+    "/collectStore": {
+      "get": {
+        "x-controller-name": "StoreController",
+        "x-operation-name": "getGlobalData",
+        "tags": [
+          "StoreController"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Return value of StoreController.getGlobalData",
+            "content": {}
+          }
+        },
+        "operationId": "StoreController.getGlobalData"
+      }
+    },
+    "/collectUserData/{id}": {
+      "get": {
+        "x-controller-name": "StoreController",
+        "x-operation-name": "getUserInfo",
+        "tags": [
+          "StoreController"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Return value of StoreController.getUserInfo",
+            "content": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "number"
+            },
+            "required": true
+          }
+        ],
+        "operationId": "StoreController.getUserInfo"
+      }
+    },
+    "/ping": {
+      "get": {
+        "x-controller-name": "PingController",
+        "x-operation-name": "ping",
+        "tags": [
+          "PingController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Ping Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PingResponse"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "operationId": "PingController.ping"
+      }
+    },
+    "/": {
+      "get": {
+        "x-controller-name": "HomePageController",
+        "x-operation-name": "homePage",
+        "tags": [
+          "HomePageController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Home Page",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "operationId": "HomePageController.homePage"
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "HTTPBearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "PingResponse": {
+        "type": "object",
+        "title": "PingResponse",
+        "properties": {
+          "greeting": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "headers": {
+            "type": "object",
+            "properties": {
+              "Content-Type": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": true
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ]
+}
