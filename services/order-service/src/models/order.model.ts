@@ -28,7 +28,7 @@ export class Order extends Entity {
     type: 'number',
     name: "total_price"
   })
-  totalPrice?: string;
+  totalPrice?: number;
 
   @hasMany(() => OrderItem, {
     keyFrom: "orderId",

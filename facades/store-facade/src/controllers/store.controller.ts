@@ -4,6 +4,27 @@ import { get, getModelSchemaRef, param, post, requestBody, response } from '@loo
 import { StoreService } from '../services';
 import { authorize } from 'loopback4-authorization';
 // import { Order } from 'order-service';
+import {UserDto, ProductDto, OrderDto, OrderItemDto} from "packages-interfaces"
+
+  interface StoreDto {
+    products: ProductDto[],
+    orders: OrderDto[],
+    users: UserDto[],
+  }
+
+  interface OrderItemProductDto extends OrderItemDto{
+    product?: ProductDto | null;
+  }
+
+  interface EntitesDto extends OrderDto{
+    orderItems: OrderItemProductDto[]
+  }
+
+  interface UserInfoDto {
+    detail: UserDto,
+    entities?: EntitesDto[]
+  }
+
 
 export class StoreController {
   constructor(
@@ -11,9 +32,10 @@ export class StoreController {
   ) { }
 
 
+
   @authorize({ permissions: ['*'] })
   @get('/collectStore')
-  async getGlobalData(): Promise<any> {
+  async getGlobalData(): Promise<StoreDto> {
     const products = await this.storeService.getProducts();
     const orders = await this.storeService.getOrders();
     const users = await this.storeService.getUsers();
@@ -26,7 +48,7 @@ export class StoreController {
 
   @authorize({ permissions: ['*'] })
   @get('/collectUserData/{id}')
-  async getUserInfo(@param.path.number('id') id: number,): Promise<any> {
+  async getUserInfo(@param.path.number('id') id: number,): Promise<UserInfoDto> {
     const userDetail = await this.storeService.getUserDetail(id);
     const orderRawQuery = {
       where: {
@@ -38,8 +60,6 @@ export class StoreController {
     }
     const encodedOrderFilter = encodeURIComponent(JSON.stringify(orderRawQuery));
     const orders = await this.storeService.getOrders(encodedOrderFilter);
-
-
     const productIds = await this.collectProductIds(orders);
 
     const productRawQuery = {
@@ -52,7 +72,7 @@ export class StoreController {
     const orderEntities = await this.mergeItemProducts(orders, products);
 
     return {
-      userDetail,
+      detail: userDetail,
       entities: orderEntities
     };
   }
@@ -69,21 +89,21 @@ export class StoreController {
     return productIds;
   }
 
-  async mergeItemProducts(orders: Array<any>, products: Array<any>): Promise<any> {
+  async mergeItemProducts(orders: Array<OrderDto>, products: Array<ProductDto>): Promise<EntitesDto[]> {
     const productMap = new Map(products.map(product => [product.id, product]));
-    const mergedOrders: any[] = orders.map((order: any) => {
-      const mergedItems: any[] = order.orderItems.map((item: any) => {
-        const product = productMap.get(item.productId);
-        return {
-          ...item,
-          product: product || null, // merge product details
-        };
-      });
+    const mergedOrders: EntitesDto[] = orders.map(order => {
+      const mergedItems: OrderItemProductDto[] = (order as EntitesDto).orderItems.map(item => {
+      const product = productMap.get(item.productId);
       return {
-        ...order,
-        orderItems: mergedItems,
+        ...item,
+        product: product || null, // merge product details
       };
     });
+    return {
+      ...order,
+      orderItems: mergedItems,
+    };
+  });
     return mergedOrders;
   }
 }

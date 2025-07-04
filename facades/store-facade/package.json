@@ -1,5 +1,5 @@
 {
-    "name": "-store-facade",
+    "name": "store-facade",
     "version": "0.0.1",
     "description": "store-facade",
     "keywords": [
@@ -82,7 +82,8 @@
         "loopback4-ratelimiter": "^7.0.6",
         "swagger-stats": "^0.99.5",
         "symlink-resolver": "0.2.1",
-        "tslib": "^2.6.2"
+        "tslib": "^2.6.2",
+        "packages-interfaces": "1.0.0"
     },
     "devDependencies": {
         "@istanbuljs/nyc-config-typescript": "^1.0.2",
