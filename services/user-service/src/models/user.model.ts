@@ -1,8 +1,10 @@
 import {Entity, model, property} from '@loopback/repository';
+import { FormattedDate } from "packages-helper";
 
 @model({
   name: "users"
 })
+
 export class User extends Entity {
   @property({
     type: 'number',
@@ -31,8 +33,8 @@ export class User extends Entity {
   })
   role?: string;
 
-  @property({
-    type: 'date',
+  @FormattedDate("YYYY-MM-DD hh:mm A", {
+     type: 'date',
     name: "created_at"
   })
   createdAt?: string;

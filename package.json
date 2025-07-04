@@ -38,6 +38,7 @@
     }
   },
   "dependencies": {
-    "mochawesome": "^7.1.3"
+    "mochawesome": "^7.1.3",
+    "moment": "^2.30.1"
   }
 }

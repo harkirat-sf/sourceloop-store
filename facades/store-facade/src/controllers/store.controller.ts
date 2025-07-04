@@ -1,9 +1,9 @@
 
 import { inject } from '@loopback/core';
-import { get, getModelSchemaRef, param, post, requestBody, response } from '@loopback/rest';
+import { get, param } from '@loopback/rest';
 import { StoreService } from '../services';
 import { authorize } from 'loopback4-authorization';
-// import { Order } from 'order-service';
+
 import {UserDto, ProductDto, OrderDto, OrderItemDto} from "packages-interfaces"
 
   interface StoreDto {
