@@ -71,6 +71,51 @@
         "operationId": "UserController.count"
       }
     },
+    "/users/login": {
+      "post": {
+        "x-controller-name": "UserController",
+        "x-operation-name": "login",
+        "tags": [
+          "UserController"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "User model instance",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "password"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "UserController.login"
+      }
+    },
     "/users/{id}": {
       "put": {
         "x-controller-name": "UserController",
@@ -308,6 +353,7 @@
         "tags": [
           "UserController"
         ],
+        "description": "",
         "responses": {
           "200": {
             "description": "Array of User model instances",
@@ -389,7 +435,12 @@
             "type": "string"
           },
           "role": {
-            "type": "string"
+            "type": "string",
+            "enum": [
+              "SUPER_ADMIN",
+              "ADMIN",
+              "SUBSCRIBER"
+            ]
           },
           "createdAt": {
             "type": "string",
@@ -413,7 +464,12 @@
             "type": "string"
           },
           "role": {
-            "type": "string"
+            "type": "string",
+            "enum": [
+              "SUPER_ADMIN",
+              "ADMIN",
+              "SUBSCRIBER"
+            ]
           },
           "createdAt": {
             "type": "string",
@@ -441,7 +497,12 @@
             "type": "string"
           },
           "role": {
-            "type": "string"
+            "type": "string",
+            "enum": [
+              "SUPER_ADMIN",
+              "ADMIN",
+              "SUBSCRIBER"
+            ]
           },
           "createdAt": {
             "type": "string",
@@ -469,7 +530,12 @@
             "type": "string"
           },
           "role": {
-            "type": "string"
+            "type": "string",
+            "enum": [
+              "SUPER_ADMIN",
+              "ADMIN",
+              "SUBSCRIBER"
+            ]
           },
           "createdAt": {
             "type": "string",

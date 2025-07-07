@@ -17,21 +17,21 @@ import {
   requestBody,
   response,
 } from '@loopback/rest';
-import {User} from '../models';
-import {UserRepository} from '../repositories';
+import { User } from '../models';
+import { UserRepository } from '../repositories';
 import { authorize } from 'loopback4-authorization';
 
 export class UserController {
   constructor(
     @repository(UserRepository)
-    public userRepository : UserRepository,
-  ) {}
+    public userRepository: UserRepository,
+  ) { }
 
-  @authorize({permissions: ['*']})
+  @authorize({ permissions: ['*'] })
   @post('/users')
   @response(200, {
     description: 'User model instance',
-    content: {'application/json': {schema: getModelSchemaRef(User)}},
+    content: { 'application/json': { schema: getModelSchemaRef(User) } },
   })
   async create(
     @requestBody({
@@ -46,13 +46,41 @@ export class UserController {
     })
     user: Omit<User, 'id'>,
   ): Promise<User> {
-    return this.userRepository.create(user);
+    return this.userRepository.createUser(user);
   }
 
+  @authorize({ permissions: ['*'] })
+  @post('/users/login')
+  @response(200, {
+    description: 'User model instance',
+    content: { 'application/json': { schema: getModelSchemaRef(User) } },
+  })
+  async login(
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: {
+            type: "object",
+            required: ['email', 'password'],
+            properties: {
+              email: {type: 'string', format: 'email'},
+              password: {type: 'string'},
+            },
+          },
+        },
+      },
+    })
+    credentials: {email: string; password: string},
+  ): Promise<any> {
+    const {email, password} = credentials;
+    return this.userRepository.login(email, password);
+  }
+
+  
   @get('/users/count')
   @response(200, {
     description: 'User model count',
-    content: {'application/json': {schema: CountSchema}},
+    content: { 'application/json': { schema: CountSchema } },
   })
   async count(
     @param.where(User) where?: Where<User>,
@@ -61,7 +89,7 @@ export class UserController {
   }
 
 
-  // @authorize({permissions: ['*']})
+  @authorize({ permissions: ['*'] })
   @get('/users')
   @response(200, {
     description: 'Array of User model instances',
@@ -69,7 +97,7 @@ export class UserController {
       'application/json': {
         schema: {
           type: 'array',
-          items: getModelSchemaRef(User, {includeRelations: true}),
+          items: getModelSchemaRef(User, { includeRelations: true }),
         },
       },
     },
@@ -80,17 +108,17 @@ export class UserController {
     return this.userRepository.find(filter);
   }
 
-  @authorize({permissions: ['*']})
+  @authorize({ permissions: ['*'] })
   @patch('/users')
   @response(200, {
     description: 'User PATCH success count',
-    content: {'application/json': {schema: CountSchema}},
+    content: { 'application/json': { schema: CountSchema } },
   })
   async updateAll(
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(User, {partial: true}),
+          schema: getModelSchemaRef(User, { partial: true }),
         },
       },
     })
@@ -99,20 +127,20 @@ export class UserController {
   ): Promise<Count> {
     return this.userRepository.updateAll(user, where);
   }
-  
-  @authorize({permissions: ['*']})
+
+  @authorize({ permissions: ['*'] })
   @get('/users/{id}')
   @response(200, {
     description: 'User model instance',
     content: {
       'application/json': {
-        schema: getModelSchemaRef(User, {includeRelations: true}),
+        schema: getModelSchemaRef(User, { includeRelations: true }),
       },
     },
   })
   async findById(
     @param.path.number('id') id: number,
-    @param.filter(User, {exclude: 'where'}) filter?: FilterExcludingWhere<User>
+    @param.filter(User, { exclude: 'where' }) filter?: FilterExcludingWhere<User>
   ): Promise<User> {
     return this.userRepository.findById(id, filter);
   }
@@ -126,7 +154,7 @@ export class UserController {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(User, {partial: true}),
+          schema: getModelSchemaRef(User, { partial: true }),
         },
       },
     })
