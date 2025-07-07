@@ -1,10 +1,9 @@
 
 import { inject } from '@loopback/core';
 import { get, param } from '@loopback/rest';
-import { StoreService } from '../services';
 import { authorize } from 'loopback4-authorization';
-
 import {UserDto, ProductDto, OrderDto, OrderItemDto} from "packages-interfaces"
+import { OrderService, ProductService, UserService } from '../services';
 
   interface StoreDto {
     products: ProductDto[],
@@ -28,7 +27,9 @@ import {UserDto, ProductDto, OrderDto, OrderItemDto} from "packages-interfaces"
 
 export class StoreController {
   constructor(
-    @inject('services.Store') protected storeService: StoreService
+    @inject('services.User') protected userService: UserService,
+    @inject('services.Product') protected productService: ProductService,
+    @inject('services.Order') protected orderService: OrderService,
   ) { }
 
 
@@ -37,9 +38,9 @@ export class StoreController {
   @get('/collectStore')
   async getGlobalData(): Promise<StoreDto> {
       const [products, orders, users] = await Promise.all([
-        this.storeService.getProducts(),
-        this.storeService.getOrders(),
-        this.storeService.getUsers()
+        this.productService.getProducts(),
+        this.orderService.getOrders(),
+        this.userService.getUsers()
       ]);
     return {
       products,
@@ -51,7 +52,7 @@ export class StoreController {
   @authorize({ permissions: ['*'] })
   @get('/collectUserData/{id}')
   async getUserInfo(@param.path.number('id') id: number,): Promise<UserInfoDto> {
-    const userDetail = await this.storeService.getUserDetail(id);
+    const userDetail = await this.userService.getUserDetail(id);
     const orderRawQuery = {
       where: {
         userId: userDetail?.id
@@ -60,8 +61,8 @@ export class StoreController {
         relation: "orderItems"
       }]
     }
-    // const encodedOrderFilter = encodeURIComponent(JSON.stringify(orderRawQuery));
-    const orders = await this.storeService.getOrders(orderRawQuery);
+    const encodedOrderFilter = encodeURIComponent(JSON.stringify(orderRawQuery));
+    const orders = await this.orderService.getOrders(encodedOrderFilter);
     const productIds = await this.collectProductIds(orders);
 
     const productRawQuery = {
@@ -70,7 +71,7 @@ export class StoreController {
       }
     }
     const encodedProductFilter = encodeURIComponent(JSON.stringify(productRawQuery));
-    const products = await this.storeService.getProducts(encodedProductFilter);
+    const products = await this.productService.getProducts(encodedProductFilter);
     const orderEntities = await this.mergeItemProducts(orders, products);
 
     return {

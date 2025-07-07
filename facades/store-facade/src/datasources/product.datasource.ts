@@ -2,7 +2,9 @@ import {inject, lifeCycleObserver, LifeCycleObserver} from '@loopback/core';
 import {juggler} from '@loopback/repository';
 
 const config = {
+  name: 'product',
   connector: 'rest',
+  baseURL: '',
   crud: false,
   options: {
     headers: {
@@ -18,33 +20,6 @@ const config = {
       functions: {
         getProducts: ["filter"]
       },
-    },
-    {
-      template: {
-        method: 'GET',
-        url: `${process.env.ORDER_SERVICE}orders?filter={filter}`,
-      },
-      functions: {
-        getOrders: ["filter"],
-      },
-    },
-    {
-      template: {
-        method: 'GET',
-        url: `${process.env.USER_SERVICE}users`,
-      },
-      functions: {
-        getUsers: [],
-      },
-    },
-    {
-      template: {
-        method: 'GET',
-        url: `${process.env.USER_SERVICE}users/{id}`,
-      },
-      functions: {
-        getUserDetail: ["id"],
-      },
     }
   ],
 };
@@ -54,13 +29,13 @@ const config = {
 // gracefully. The `stop()` method is inherited from `juggler.DataSource`.
 // Learn more at https://loopback.io/doc/en/lb4/Life-cycle.html
 @lifeCycleObserver('datasource')
-export class CommunicatorDataSource extends juggler.DataSource
+export class ProductDataSource extends juggler.DataSource
   implements LifeCycleObserver {
-  static dataSourceName = 'communicator';
+  static dataSourceName = 'product';
   static readonly defaultConfig = config;
 
   constructor(
-    @inject('datasources.config.communicator', {optional: true})
+    @inject('datasources.config.product', {optional: true})
     dsConfig: object = config,
   ) {
     super(dsConfig);

@@ -86,7 +86,7 @@ export class StoreFacadeApplication extends BootMixin(
       contentSecurityPolicy: {
         directives: {
           frameSrc: ["'self'"],
-          scriptSrc: ["'self'", `'${process.env.CSP_SCRIPT_SRC_HASH ?? ''}'`],
+          scriptSrc: ["'self'", "'unsafe-inline'"],
         },
       },
       hsts: {
