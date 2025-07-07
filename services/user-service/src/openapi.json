@@ -308,7 +308,6 @@
         "tags": [
           "UserController"
         ],
-        "description": "",
         "responses": {
           "200": {
             "description": "Array of User model instances",

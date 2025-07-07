@@ -1,13 +1,13 @@
 import {inject, Provider} from '@loopback/core';
 import {getService} from '@loopback/service-proxy';
 import { CommunicatorDataSource } from '../datasources';
-import { AnyObject, juggler } from '@loopback/repository';
+import { AnyObject, Filter, juggler } from '@loopback/repository';
 import { UserDto, OrderDto, ProductDto } from "packages-interfaces";
 
 
 export interface StoreService {
   getProducts(filter?: string): Promise<Array<ProductDto>>;
-  getOrders(filter?: string): Promise<Array<OrderDto>>;
+  getOrders(filter?: Filter): Promise<Array<OrderDto>>;
   getUsers(): Promise<Array<UserDto>>;
   getUserDetail(id: number): Promise<UserDto>;
 }

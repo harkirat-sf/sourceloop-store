@@ -61,7 +61,7 @@ export class UserController {
   }
 
 
-  @authorize({permissions: ['*']})
+  // @authorize({permissions: ['*']})
   @get('/users')
   @response(200, {
     description: 'Array of User model instances',

@@ -36,9 +36,11 @@ export class StoreController {
   @authorize({ permissions: ['*'] })
   @get('/collectStore')
   async getGlobalData(): Promise<StoreDto> {
-    const products = await this.storeService.getProducts();
-    const orders = await this.storeService.getOrders();
-    const users = await this.storeService.getUsers();
+      const [products, orders, users] = await Promise.all([
+        this.storeService.getProducts(),
+        this.storeService.getOrders(),
+        this.storeService.getUsers()
+      ]);
     return {
       products,
       orders,
@@ -58,8 +60,8 @@ export class StoreController {
         relation: "orderItems"
       }]
     }
-    const encodedOrderFilter = encodeURIComponent(JSON.stringify(orderRawQuery));
-    const orders = await this.storeService.getOrders(encodedOrderFilter);
+    // const encodedOrderFilter = encodeURIComponent(JSON.stringify(orderRawQuery));
+    const orders = await this.storeService.getOrders(orderRawQuery);
     const productIds = await this.collectProductIds(orders);
 
     const productRawQuery = {
