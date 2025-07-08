@@ -4,7 +4,8 @@ import { PgDataSource } from '../datasources';
 import { User, UserRelations } from '../models';
 import * as bcrypt from "bcrypt"
 import { HttpErrors } from '@loopback/rest';
-import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken";
+
 export class UserRepository extends DefaultCrudRepository<
   User,
   typeof User.prototype.id,
@@ -42,7 +43,8 @@ export class UserRepository extends DefaultCrudRepository<
 
     const options = {
       expiresIn: '1h',
-      algorithm: "HS256"
+      algorithm: "HS256",
+      issuer: process.env.JWT_ISSUER
     }
     const token = jwt.sign(payload, process.env.JWT_SECRET as string, options as any);
     return {

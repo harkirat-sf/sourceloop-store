@@ -1,0 +1,15 @@
+{
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Store Facade Start",
+            "cwd": "${workspaceFolder}/facades/store-facade",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run",
+                "start"
+            ]
+        }
+    ]
+}

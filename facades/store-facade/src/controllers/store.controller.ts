@@ -4,6 +4,7 @@ import { get, param } from '@loopback/rest';
 import { authorize } from 'loopback4-authorization';
 import {UserDto, ProductDto, OrderDto, OrderItemDto} from "packages-interfaces"
 import { OrderService, ProductService, UserService } from '../services';
+import { authenticate, STRATEGY } from 'loopback4-authentication';
 
   interface StoreDto {
     products: ProductDto[],
@@ -33,7 +34,7 @@ export class StoreController {
   ) { }
 
 
-
+  @authenticate(STRATEGY.BEARER)
   @authorize({ permissions: ['*'] })
   @get('/collectStore')
   async getGlobalData(): Promise<StoreDto> {

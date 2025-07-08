@@ -6,7 +6,7 @@ import {
 } from '@loopback/rest-explorer';
 import * as dotenv from 'dotenv';
 import * as dotenvExt from 'dotenv-extended';
-import {AuthenticationComponent} from 'loopback4-authentication';
+import {AuthenticationBindings, AuthenticationComponent, Strategies} from 'loopback4-authentication';
 import {
   AuthorizationBindings,
   AuthorizationComponent,
@@ -24,12 +24,17 @@ import {
   BearerVerifierConfig,
   BearerVerifierType,
   SECURITY_SCHEME_SPEC,
+  CasbinSecureSequence,
 } from '@sourceloop/core';
 import {RepositoryMixin} from '@loopback/repository';
 import {RestApplication} from '@loopback/rest';
 import {ServiceMixin} from '@loopback/service-proxy';
 import path from 'path';
 import * as openapi from './openapi.json';
+import { User } from './models';
+import { MySequence } from './sequence';
+import { BearerTokenVerifyProvider } from './providers/bearer-token-verifier';
+import { AuthServiceBindings } from '@sourceloop/authentication-service';
 
 export {ApplicationConfig};
 
@@ -77,7 +82,7 @@ export class StoreFacadeApplication extends BootMixin(
     this.component(CoreComponent);
 
     // Set up the custom sequence
-    this.sequence(SecureSequence);
+    // this.sequence(SecureSequence);
 
     this.bind(HelmetSecurityBindings.CONFIG).to({
       referrerPolicy: {
@@ -86,7 +91,7 @@ export class StoreFacadeApplication extends BootMixin(
       contentSecurityPolicy: {
         directives: {
           frameSrc: ["'self'"],
-          scriptSrc: ["'self'", "'unsafe-inline'"],
+          scriptSrc: ["'self'", "'unsafe-inline'"]
         },
       },
       hsts: {
@@ -102,20 +107,33 @@ export class StoreFacadeApplication extends BootMixin(
       keyGenerator: rateLimitKeyGen,
     });
 
+    this.bind(AuthServiceBindings.Config).to({
+      useCustomSequence:true,
+      useSymmetricEncryption: true,
+    });
+
     // Add authentication component
     this.component(AuthenticationComponent);
+    this.bind(AuthenticationBindings.USER_MODEL).to(User as any);
+    this.bind(Strategies.Passport.BEARER_TOKEN_VERIFIER).toProvider(
+      BearerTokenVerifyProvider,
+    );
+
+
+     this.sequence(MySequence);
 
     // Add bearer verifier component
     this.bind(BearerVerifierBindings.Config).to({
       type: BearerVerifierType.facade,
+      useSymmetricEncryption:true,
     } as BearerVerifierConfig);
+    
     this.component(BearerVerifierComponent);
     // Add authorization component
     this.bind(AuthorizationBindings.CONFIG).to({
       allowAlwaysPaths: ['/explorer', '/openapi.json'],
     });
     this.component(AuthorizationComponent);
-
     // Set up default home page
     this.static('/', path.join(__dirname, '../public'));
 
