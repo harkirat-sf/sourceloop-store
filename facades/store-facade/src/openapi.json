@@ -17,7 +17,7 @@
         "tags": [
           "StoreController"
         ],
-        "description": "",
+        "description": "\n\n| Permissions |\n| ------- |\n| GET_STORE   |\n",
         "responses": {
           "200": {
             "description": "Return value of StoreController.getGlobalData",

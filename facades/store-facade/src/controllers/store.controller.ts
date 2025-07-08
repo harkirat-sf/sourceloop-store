@@ -5,6 +5,7 @@ import { authorize } from 'loopback4-authorization';
 import {UserDto, ProductDto, OrderDto, OrderItemDto} from "packages-interfaces"
 import { OrderService, ProductService, UserService } from '../services';
 import { authenticate, STRATEGY } from 'loopback4-authentication';
+import { Permission } from '../enums/Permission';
 
   interface StoreDto {
     products: ProductDto[],
@@ -34,8 +35,10 @@ export class StoreController {
   ) { }
 
 
-  @authenticate(STRATEGY.BEARER)
-  @authorize({ permissions: ['*'] })
+  @authenticate(STRATEGY.BEARER, {
+    passReqToCallback: true,
+  })
+  @authorize({permissions: [Permission.GET_STORE]})
   @get('/collectStore')
   async getGlobalData(): Promise<StoreDto> {
       const [products, orders, users] = await Promise.all([

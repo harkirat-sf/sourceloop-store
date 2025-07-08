@@ -130,10 +130,14 @@ export class StoreFacadeApplication extends BootMixin(
     
     this.component(BearerVerifierComponent);
     // Add authorization component
+ 
     this.bind(AuthorizationBindings.CONFIG).to({
       allowAlwaysPaths: ['/explorer', '/openapi.json'],
     });
+
     this.component(AuthorizationComponent);
+   
+
     // Set up default home page
     this.static('/', path.join(__dirname, '../public'));
 
