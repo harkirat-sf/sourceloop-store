@@ -12,7 +12,7 @@ import {
   AuthorizationComponent,
 } from 'loopback4-authorization';
 import {HelmetSecurityBindings} from 'loopback4-helmet';
-import {RateLimitSecurityBindings} from 'loopback4-ratelimiter';
+import {RateLimiterComponent, RateLimitSecurityBindings} from 'loopback4-ratelimiter';
 import {
   CoreComponent,
   SecureSequence,
@@ -82,7 +82,7 @@ export class StoreFacadeApplication extends BootMixin(
     this.component(CoreComponent);
 
     // Set up the custom sequence
-    // this.sequence(SecureSequence);
+    this.sequence(SecureSequence);
 
     this.bind(HelmetSecurityBindings.CONFIG).to({
       referrerPolicy: {
@@ -101,12 +101,16 @@ export class StoreFacadeApplication extends BootMixin(
       },
     });
 
-    this.bind(RateLimitSecurityBindings.CONFIG).to({
-      name: AuthCacheSourceName,
-      max: parseInt(process.env.RATE_LIMIT_REQUEST_CAP ?? '100'),
+
+     this.bind(RateLimitSecurityBindings.CONFIG).to({
+      name: "AuthDB",
+       type: 'RedisStore',
+      max: parseInt(process.env.RATE_LIMIT_REQUEST_CAP || "100"),
       keyGenerator: rateLimitKeyGen,
     });
 
+    this.component(RateLimiterComponent);
+   
     this.bind(AuthServiceBindings.Config).to({
       useCustomSequence:true,
       useSymmetricEncryption: true,

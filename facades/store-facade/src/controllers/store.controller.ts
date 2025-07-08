@@ -8,6 +8,7 @@ import { authenticate, STRATEGY } from 'loopback4-authentication';
 import { Permission } from '../enums/Permission';
 import { Product } from '../models/product.model';
 import { collectProductIds, mergeItemProducts } from '../helpers/store';
+import { ratelimit } from 'loopback4-ratelimiter';
 
   interface StoreDto {
     products: ProductDto[],
@@ -59,6 +60,7 @@ export class StoreController {
     passReqToCallback: true,
   })
   @authorize({ permissions: ['*'] })
+  @ratelimit(false) // no rate limit will be applied to it
   @get('/collectUserData/{id}')
   async getUserInfo(@param.path.number('id') id: number,): Promise<UserInfoDto> {
     const userDetail = await this.userService.getUserDetail(id);

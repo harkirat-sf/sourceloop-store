@@ -5,6 +5,7 @@ import { AuthenticateFn, AuthenticationBindings } from "loopback4-authentication
 import { AuthorizeErrorKeys, AuthorizeFn } from "loopback4-authorization";
 import { RolePermissions } from "./mapper/RoleMapper";
 import { UserRole } from "./enums/Role";
+import { RateLimitAction, RateLimitSecurityBindings } from "loopback4-ratelimiter";
 
 export class MySequence implements SequenceHandler {
   constructor(
@@ -13,9 +14,11 @@ export class MySequence implements SequenceHandler {
     @inject(SequenceActions.INVOKE_METHOD) protected invoke: InvokeMethod,
     @inject(SequenceActions.SEND) public send: Send,
     @inject(SequenceActions.REJECT) public reject: Reject,
+    @inject(RateLimitSecurityBindings.RATELIMIT_SECURITY_ACTION)
+    protected rateLimitAction: RateLimitAction,
     @inject(AuthenticationBindings.USER_AUTH_ACTION)
     protected authenticateRequest: AuthenticateFn<AuthUser>,
-     @inject(AuthorizationBindings.AUTHORIZE_ACTION)
+    @inject(AuthorizationBindings.AUTHORIZE_ACTION)
     protected checkAuthorisation: AuthorizeFn,
   ) {}
 
@@ -25,6 +28,10 @@ export class MySequence implements SequenceHandler {
 
       const route = this.findRoute(request);
       const args = await this.parseParams(request, route);
+
+            // rate limit Action here
+      await this.rateLimitAction(request, response);
+
       request.body = args[args.length - 1];
       // console.log("______>")
       const authUser: AuthUser = await this.authenticateRequest(request, response);
