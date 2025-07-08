@@ -1,11 +1,13 @@
 
 import { inject } from '@loopback/core';
-import { get, param } from '@loopback/rest';
+import { get, getModelSchemaRef, param, post, requestBody, response } from '@loopback/rest';
 import { authorize } from 'loopback4-authorization';
 import {UserDto, ProductDto, OrderDto, OrderItemDto} from "packages-interfaces"
 import { OrderService, ProductService, UserService } from '../services';
 import { authenticate, STRATEGY } from 'loopback4-authentication';
 import { Permission } from '../enums/Permission';
+import { Product } from '../models/product.model';
+import { collectProductIds, mergeItemProducts } from '../helpers/store';
 
   interface StoreDto {
     products: ProductDto[],
@@ -13,11 +15,11 @@ import { Permission } from '../enums/Permission';
     users: UserDto[],
   }
 
-  interface OrderItemProductDto extends OrderItemDto{
+  export interface OrderItemProductDto extends OrderItemDto{
     product?: ProductDto | null;
   }
 
-  interface EntitesDto extends OrderDto{
+  export interface EntitesDto extends OrderDto{
     orderItems: OrderItemProductDto[]
   }
 
@@ -53,6 +55,9 @@ export class StoreController {
     };
   }
 
+  @authenticate(STRATEGY.BEARER, {
+    passReqToCallback: true,
+  })
   @authorize({ permissions: ['*'] })
   @get('/collectUserData/{id}')
   async getUserInfo(@param.path.number('id') id: number,): Promise<UserInfoDto> {
@@ -67,7 +72,7 @@ export class StoreController {
     }
     const encodedOrderFilter = encodeURIComponent(JSON.stringify(orderRawQuery));
     const orders = await this.orderService.getOrders(encodedOrderFilter);
-    const productIds = await this.collectProductIds(orders);
+    const productIds = await collectProductIds(orders);
 
     const productRawQuery = {
       where: {
@@ -76,7 +81,7 @@ export class StoreController {
     }
     const encodedProductFilter = encodeURIComponent(JSON.stringify(productRawQuery));
     const products = await this.productService.getProducts(encodedProductFilter);
-    const orderEntities = await this.mergeItemProducts(orders, products);
+    const orderEntities = await mergeItemProducts(orders, products);
 
     return {
       detail: userDetail,
@@ -84,35 +89,31 @@ export class StoreController {
     };
   }
 
-  async collectProductIds(orders: any): Promise<number[]> {
-    const productIds: number[] = [];
-    for (const order of orders) {
-      for (const item of order.orderItems) {
-        if (item?.productId != null) {
-          productIds.push(item.productId);
-        }
-      }
-    }
-    return productIds;
+  @authenticate(STRATEGY.BEARER, {
+    passReqToCallback: true,
+  })
+  @authorize({ permissions: [Permission.CREATE_PRODUCT] })
+  @post('/product')
+  @response(200, {
+    description: 'Product model instance',
+    content: {'application/json': {schema: getModelSchemaRef(Product)}},
+  })
+  async createProduct(
+     @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(Product, {
+            title: 'NewProduct',
+            exclude: ['id'],
+          }),
+        },
+      },
+    })
+    product: Omit<Product, 'id'>,
+  ): Promise<Product> {
+    return this.productService.createProduct(product)
   }
 
-  async mergeItemProducts(orders: Array<OrderDto>, products: Array<ProductDto>): Promise<EntitesDto[]> {
-    const productMap = new Map(products.map(product => [product.id, product]));
-    const mergedOrders: EntitesDto[] = orders.map(order => {
-      const mergedItems: OrderItemProductDto[] = (order as EntitesDto).orderItems.map(item => {
-      const product = productMap.get(item.productId);
-      return {
-        ...item,
-        product: product || null, // merge product details
-      };
-    });
-    return {
-      ...order,
-      orderItems: mergedItems,
-    };
-  });
-    return mergedOrders;
-  }
 }
 
 

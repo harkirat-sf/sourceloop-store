@@ -20,6 +20,16 @@ const config = {
       functions: {
         getProducts: ["filter"]
       },
+    },
+    {
+      template: {
+        method: 'POST',
+        url: `${process.env.PRODUCT_SERVICE}products`,
+        body: '{body}',
+      },
+      functions: {
+        createProduct: ["body"]
+      },
     }
   ],
 };

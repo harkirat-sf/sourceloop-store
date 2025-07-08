@@ -28,7 +28,7 @@ export class MySequence implements SequenceHandler {
       request.body = args[args.length - 1];
       // console.log("______>")
       const authUser: AuthUser = await this.authenticateRequest(request, response);
-      const userPermissions = RolePermissions[authUser.role as UserRole];
+      const userPermissions = RolePermissions[authUser?.role as UserRole] ?? [];
       const isAccessAllowed: boolean = await this.checkAuthorisation(
         userPermissions,
         request,

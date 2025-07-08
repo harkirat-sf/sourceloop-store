@@ -77,6 +77,38 @@
         "operationId": "PingController.ping"
       }
     },
+    "/product": {
+      "post": {
+        "x-controller-name": "StoreController",
+        "x-operation-name": "createProduct",
+        "tags": [
+          "StoreController"
+        ],
+        "description": "\n\n| Permissions |\n| ------- |\n| CREATE_PRODUCT   |\n",
+        "responses": {
+          "200": {
+            "description": "Product model instance",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewProduct"
+              }
+            }
+          }
+        },
+        "operationId": "StoreController.createProduct"
+      }
+    },
     "/": {
       "get": {
         "x-controller-name": "HomePageController",
@@ -110,6 +142,49 @@
       }
     },
     "schemas": {
+      "Product": {
+        "title": "Product",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "basePrice": {
+            "type": "number"
+          },
+          "salePrice": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false
+      },
+      "NewProduct": {
+        "title": "NewProduct",
+        "type": "object",
+        "description": "(tsType: Omit<Product, 'id'>, schemaOptions: { title: 'NewProduct', exclude: [ 'id' ] })",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "basePrice": {
+            "type": "number"
+          },
+          "salePrice": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false,
+        "x-typescript-type": "Omit<Product, 'id'>"
+      },
       "PingResponse": {
         "type": "object",
         "title": "PingResponse",
