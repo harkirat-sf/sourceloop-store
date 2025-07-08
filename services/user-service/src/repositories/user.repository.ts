@@ -38,7 +38,8 @@ export class UserRepository extends DefaultCrudRepository<
     // generate new jwt token
     const payload = {
       id: user?.id,
-      email: user?.email
+      email: user?.email,
+      role: user?.role
     }
 
     const options = {
