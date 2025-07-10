@@ -39,7 +39,8 @@ export class UserRepository extends DefaultCrudRepository<
     const payload = {
       id: user?.id,
       email: user?.email,
-      role: user?.role
+      role: user?.role,
+      permissions: ["CreateNotification"]
     }
 
     const options = {

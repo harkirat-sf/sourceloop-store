@@ -5,9 +5,9 @@
     "passes": 3,
     "pending": 0,
     "failures": 0,
-    "start": "2025-07-08T07:45:14.878Z",
-    "end": "2025-07-08T07:45:15.038Z",
-    "duration": 160,
+    "start": "2025-07-08T08:20:58.590Z",
+    "end": "2025-07-08T08:20:58.749Z",
+    "duration": 159,
     "testsRegistered": 3,
     "passPercent": 100,
     "pendingPercent": 0,
@@ -18,7 +18,7 @@
   },
   "results": [
     {
-      "uuid": "9ae7307f-ee96-4dfd-a69c-3c4a6fe3446b",
+      "uuid": "b33b35e7-aee9-4671-b5bf-c99b65218ca9",
       "title": "",
       "fullFile": "",
       "file": "",
@@ -27,7 +27,7 @@
       "tests": [],
       "suites": [
         {
-          "uuid": "e521536b-e966-449c-bb19-23bdbecde1d4",
+          "uuid": "2307a81c-cb19-42bb-ab0c-795900e9c761",
           "title": "HomePage",
           "fullFile": "/Users/harkirat.singh/Desktop/learning-sourceloop/store/services/product-service/dist/__tests__/acceptance/home-page.acceptance.js",
           "file": "/dist/__tests__/acceptance/home-page.acceptance.js",
@@ -36,7 +36,7 @@
               "title": "\"before all\" hook: setupApplication in \"HomePage\"",
               "fullTitle": "HomePage \"before all\" hook: setupApplication in \"HomePage\"",
               "timedOut": false,
-              "duration": 114,
+              "duration": 111,
               "state": null,
               "speed": null,
               "pass": false,
@@ -45,8 +45,8 @@
               "context": null,
               "code": "({ app, client } = await (0, test_helper_1.setupApplication)());",
               "err": {},
-              "uuid": "4e29073f-d973-461d-b205-c9a267472654",
-              "parentUUID": "e521536b-e966-449c-bb19-23bdbecde1d4",
+              "uuid": "02672299-d359-4ada-928e-12fb7ee04472",
+              "parentUUID": "2307a81c-cb19-42bb-ab0c-795900e9c761",
               "isHook": true,
               "skipped": false
             }
@@ -56,7 +56,7 @@
               "title": "\"after all\" hook in \"HomePage\"",
               "fullTitle": "HomePage \"after all\" hook in \"HomePage\"",
               "timedOut": false,
-              "duration": 0,
+              "duration": 1,
               "state": null,
               "speed": null,
               "pass": false,
@@ -65,8 +65,8 @@
               "context": null,
               "code": "await app.stop();",
               "err": {},
-              "uuid": "f45df927-17ce-4ef0-93df-f91eb2ed33c4",
-              "parentUUID": "e521536b-e966-449c-bb19-23bdbecde1d4",
+              "uuid": "3b944742-f93a-4daa-a347-1f2bbd99c558",
+              "parentUUID": "2307a81c-cb19-42bb-ab0c-795900e9c761",
               "isHook": true,
               "skipped": false
             }
@@ -76,7 +76,7 @@
               "title": "exposes a default home page",
               "fullTitle": "HomePage exposes a default home page",
               "timedOut": false,
-              "duration": 19,
+              "duration": 25,
               "state": "passed",
               "speed": "fast",
               "pass": true,
@@ -85,8 +85,8 @@
               "context": null,
               "code": "await client\n    .get('/')\n    .expect(200)\n    .expect('Content-Type', /text\\/html/);",
               "err": {},
-              "uuid": "e386834c-9fc4-4846-99cb-f4fd986db5a1",
-              "parentUUID": "e521536b-e966-449c-bb19-23bdbecde1d4",
+              "uuid": "4d0d7b97-ef8d-4a3b-bd2c-b898c19f6712",
+              "parentUUID": "2307a81c-cb19-42bb-ab0c-795900e9c761",
               "isHook": false,
               "skipped": false
             },
@@ -103,27 +103,27 @@
               "context": null,
               "code": "await client\n    .get('/explorer/')\n    .expect(200)\n    .expect('Content-Type', /text\\/html/)\n    .expect(/<title>LoopBack API Explorer/);",
               "err": {},
-              "uuid": "d264dcd1-1732-4442-9b1d-ba9806d8a069",
-              "parentUUID": "e521536b-e966-449c-bb19-23bdbecde1d4",
+              "uuid": "d47b12ba-3b9a-4317-94ab-72a0433de933",
+              "parentUUID": "2307a81c-cb19-42bb-ab0c-795900e9c761",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "e386834c-9fc4-4846-99cb-f4fd986db5a1",
-            "d264dcd1-1732-4442-9b1d-ba9806d8a069"
+            "4d0d7b97-ef8d-4a3b-bd2c-b898c19f6712",
+            "d47b12ba-3b9a-4317-94ab-72a0433de933"
           ],
           "failures": [],
           "pending": [],
           "skipped": [],
-          "duration": 24,
+          "duration": 30,
           "root": false,
           "rootEmpty": false,
           "_timeout": 2000
         },
         {
-          "uuid": "148a38df-cc23-4cb9-8b48-fca9c8ab333e",
+          "uuid": "3b900f3f-358d-4fa0-ac2d-a6c2d1b15fef",
           "title": "PingController",
           "fullFile": "/Users/harkirat.singh/Desktop/learning-sourceloop/store/services/product-service/dist/__tests__/acceptance/ping.controller.acceptance.js",
           "file": "/dist/__tests__/acceptance/ping.controller.acceptance.js",
@@ -132,7 +132,7 @@
               "title": "\"before all\" hook: setupApplication in \"PingController\"",
               "fullTitle": "PingController \"before all\" hook: setupApplication in \"PingController\"",
               "timedOut": false,
-              "duration": 12,
+              "duration": 9,
               "state": null,
               "speed": null,
               "pass": false,
@@ -141,8 +141,8 @@
               "context": null,
               "code": "({ app, client } = await (0, test_helper_1.setupApplication)());",
               "err": {},
-              "uuid": "ba6285e7-e98f-4714-a1fd-3c2d4946f11a",
-              "parentUUID": "148a38df-cc23-4cb9-8b48-fca9c8ab333e",
+              "uuid": "756ea976-481e-4134-a11e-86875b5f277d",
+              "parentUUID": "3b900f3f-358d-4fa0-ac2d-a6c2d1b15fef",
               "isHook": true,
               "skipped": false
             }
@@ -161,8 +161,8 @@
               "context": null,
               "code": "await app.stop();",
               "err": {},
-              "uuid": "2287f00c-5887-4bd2-b942-02bba84dbf48",
-              "parentUUID": "148a38df-cc23-4cb9-8b48-fca9c8ab333e",
+              "uuid": "43aa0234-af67-4d41-9714-be74050491e1",
+              "parentUUID": "3b900f3f-358d-4fa0-ac2d-a6c2d1b15fef",
               "isHook": true,
               "skipped": false
             }
@@ -181,15 +181,15 @@
               "context": null,
               "code": "const res = await client.get('/ping?msg=world').expect(200);\n(0, testlab_1.expect)(res.body).to.containEql({ greeting: 'Hello from LoopBack' });",
               "err": {},
-              "uuid": "1299c672-1b22-461c-88a6-64aab0448e22",
-              "parentUUID": "148a38df-cc23-4cb9-8b48-fca9c8ab333e",
+              "uuid": "cb514cb4-bed2-46c9-b76e-4f605f6f4d0c",
+              "parentUUID": "3b900f3f-358d-4fa0-ac2d-a6c2d1b15fef",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "1299c672-1b22-461c-88a6-64aab0448e22"
+            "cb514cb4-bed2-46c9-b76e-4f605f6f4d0c"
           ],
           "failures": [],
           "pending": [],

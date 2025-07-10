@@ -1,5 +1,16 @@
 {
     "configurations": [
+          {
+            "type": "node",
+            "request": "launch",
+            "name": "Notification Service Start",
+            "cwd": "${workspaceFolder}/services/notification-service",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run",
+                "start"
+            ]
+        },
         {
             "type": "node",
             "request": "launch",

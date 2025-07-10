@@ -1,0 +1,201 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "notification-service2",
+    "version": "1.0.0",
+    "description": "notification-service2",
+    "contact": {
+      "name": "Harkirat",
+      "email": "harkirat.singh@sourcefuse.com"
+    }
+  },
+  "paths": {
+    "/notifications": {
+      "post": {
+        "x-controller-name": "NotificationController",
+        "x-operation-name": "create",
+        "tags": [
+          "NotificationController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Notification model instance",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Notification"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NotificationExcluding_id_"
+              }
+            }
+          }
+        },
+        "operationId": "NotificationController.create"
+      }
+    },
+    "/ping": {
+      "get": {
+        "x-controller-name": "PingController",
+        "x-operation-name": "ping",
+        "tags": [
+          "PingController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Ping Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PingResponse"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "operationId": "PingController.ping"
+      }
+    },
+    "/": {
+      "get": {
+        "x-controller-name": "HomePageController",
+        "x-operation-name": "homePage",
+        "tags": [
+          "HomePageController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Home Page",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "operationId": "HomePageController.homePage"
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "HTTPBearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "Notification": {
+        "title": "Notification",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "subject": {
+            "type": "string",
+            "nullable": true
+          },
+          "body": {
+            "type": "string"
+          },
+          "receiver": {
+            "type": "object"
+          },
+          "type": {
+            "type": "number"
+          },
+          "sentDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "options": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "body",
+          "receiver",
+          "type"
+        ],
+        "additionalProperties": false
+      },
+      "NotificationExcluding_id_": {
+        "title": "NotificationExcluding_id_",
+        "type": "object",
+        "description": "(tsType: Omit<Notification, 'id'>, schemaOptions: { exclude: [ 'id' ] })",
+        "properties": {
+          "subject": {
+            "type": "string",
+            "nullable": true
+          },
+          "body": {
+            "type": "string"
+          },
+          "receiver": {
+            "type": "object"
+          },
+          "type": {
+            "type": "number"
+          },
+          "sentDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "options": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "body",
+          "receiver",
+          "type"
+        ],
+        "additionalProperties": false,
+        "x-typescript-type": "Omit<Notification, 'id'>"
+      },
+      "PingResponse": {
+        "type": "object",
+        "title": "PingResponse",
+        "properties": {
+          "greeting": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "headers": {
+            "type": "object",
+            "properties": {
+              "Content-Type": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": true
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ]
+}
