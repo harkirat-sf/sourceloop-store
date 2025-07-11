@@ -54,6 +54,69 @@
         "operationId": "StoreController.getUserInfo"
       }
     },
+    "/order": {
+      "post": {
+        "x-controller-name": "StoreController",
+        "x-operation-name": "createOrder",
+        "tags": [
+          "StoreController"
+        ],
+        "description": "\n\n| Permissions |\n| ------- |\n| CREATE_PRODUCT   |\n",
+        "responses": {
+          "200": {
+            "description": "Product model instance",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "status",
+                  "items"
+                ],
+                "properties": {
+                  "status": {
+                    "type": "string"
+                  },
+                  "totalPrice": {
+                    "type": "number"
+                  },
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "productId"
+                      ],
+                      "properties": {
+                        "productId": {
+                          "type": "number"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "StoreController.createOrder"
+      }
+    },
     "/ping": {
       "get": {
         "x-controller-name": "PingController",
@@ -184,6 +247,23 @@
         },
         "additionalProperties": false,
         "x-typescript-type": "Omit<Product, 'id'>"
+      },
+      "LocalUserProfileDto": {
+        "title": "LocalUserProfileDto",
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ],
+        "additionalProperties": true
       },
       "PingResponse": {
         "type": "object",

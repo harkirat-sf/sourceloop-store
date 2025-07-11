@@ -6,6 +6,8 @@ import { getService } from '@loopback/service-proxy';
 
 export interface OrderService {
   getOrders(filter?: string): Promise<Array<OrderDto>>;
+  createOrder(order: any): Promise<any>;
+  createOrderItems(items: any): Promise<any>;
 }
 
 export class OrderProvider implements Provider<OrderService> {

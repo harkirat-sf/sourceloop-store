@@ -19,6 +19,26 @@ const config = {
       functions: {
         getOrders: ["filter"],
       },
+    },
+    {
+      template: {
+        method: 'POST',
+        url: `${process.env.ORDER_SERVICE}orders`,
+        body: '{body}',
+      },
+      functions: {
+        createOrder: ["body"]
+      },
+    },
+    {
+      template: {
+        method: 'POST',
+        url: `${process.env.ORDER_SERVICE}order-items/bulk`,
+        body: '{body}',
+      },
+      functions: {
+        createOrderItems: ["body"]
+      },
     }
   ],
 };

@@ -17,21 +17,21 @@ import {
   requestBody,
   response,
 } from '@loopback/rest';
-import {OrderItem} from '../models';
-import {OrderItemRepository} from '../repositories';
+import { OrderItem } from '../models';
+import { OrderItemRepository } from '../repositories';
 import { authorize } from 'loopback4-authorization';
 
 export class OrderItemsController {
   constructor(
     @repository(OrderItemRepository)
-    public orderItemRepository : OrderItemRepository,
-  ) {}
-  
-  @authorize({permissions: ['*']})
+    public orderItemRepository: OrderItemRepository,
+  ) { }
+
+  @authorize({ permissions: ['*'] })
   @post('/order-items')
   @response(200, {
     description: 'OrderItem model instance',
-    content: {'application/json': {schema: getModelSchemaRef(OrderItem)}},
+    content: { 'application/json': { schema: getModelSchemaRef(OrderItem) } },
   })
   async create(
     @requestBody({
@@ -49,17 +49,49 @@ export class OrderItemsController {
     return this.orderItemRepository.create(orderItem);
   }
 
+  @authorize({ permissions: ['*'] })
+  @post('/order-items/bulk')
+  @response(200, {
+    description: 'OrderItem model instance',
+    content: {
+      'application/json': {
+        schema: {
+          type: 'array',
+          items: getModelSchemaRef(OrderItem),
+        },
+      },
+    },
+  })
+  async createBulk(
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: {
+            type: 'array',
+            items: getModelSchemaRef(OrderItem, {
+              title: 'NewOrderItem',
+              exclude: ['id'],
+            }),
+          },
+        },
+      },
+    })
+    orderItems: Omit<OrderItem, 'id'>[],
+  ): Promise<OrderItem[]> {
+    return this.orderItemRepository.createAll(orderItems);
+  }
+
   @get('/order-items/count')
   @response(200, {
     description: 'OrderItem model count',
-    content: {'application/json': {schema: CountSchema}},
+    content: { 'application/json': { schema: CountSchema } },
   })
   async count(
     @param.where(OrderItem) where?: Where<OrderItem>,
   ): Promise<Count> {
     return this.orderItemRepository.count(where);
   }
-  @authorize({permissions: ['*']})
+  @authorize({ permissions: ['*'] })
   @get('/order-items')
   @response(200, {
     description: 'Array of OrderItem model instances',
@@ -67,7 +99,7 @@ export class OrderItemsController {
       'application/json': {
         schema: {
           type: 'array',
-          items: getModelSchemaRef(OrderItem, {includeRelations: true}),
+          items: getModelSchemaRef(OrderItem, { includeRelations: true }),
         },
       },
     },
@@ -81,13 +113,13 @@ export class OrderItemsController {
   @patch('/order-items')
   @response(200, {
     description: 'OrderItem PATCH success count',
-    content: {'application/json': {schema: CountSchema}},
+    content: { 'application/json': { schema: CountSchema } },
   })
   async updateAll(
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(OrderItem, {partial: true}),
+          schema: getModelSchemaRef(OrderItem, { partial: true }),
         },
       },
     })
@@ -102,13 +134,13 @@ export class OrderItemsController {
     description: 'OrderItem model instance',
     content: {
       'application/json': {
-        schema: getModelSchemaRef(OrderItem, {includeRelations: true}),
+        schema: getModelSchemaRef(OrderItem, { includeRelations: true }),
       },
     },
   })
   async findById(
     @param.path.number('id') id: number,
-    @param.filter(OrderItem, {exclude: 'where'}) filter?: FilterExcludingWhere<OrderItem>
+    @param.filter(OrderItem, { exclude: 'where' }) filter?: FilterExcludingWhere<OrderItem>
   ): Promise<OrderItem> {
     return this.orderItemRepository.findById(id, filter);
   }
@@ -122,7 +154,7 @@ export class OrderItemsController {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(OrderItem, {partial: true}),
+          schema: getModelSchemaRef(OrderItem, { partial: true }),
         },
       },
     })

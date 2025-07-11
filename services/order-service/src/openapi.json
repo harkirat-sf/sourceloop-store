@@ -10,6 +10,44 @@
     }
   },
   "paths": {
+    "/order-items/bulk": {
+      "post": {
+        "x-controller-name": "OrderItemsController",
+        "x-operation-name": "createBulk",
+        "tags": [
+          "OrderItemsController"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OrderItem model instance",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OrderItem"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/NewOrderItem"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "OrderItemsController.createBulk"
+      }
+    },
     "/order-items/count": {
       "get": {
         "x-controller-name": "OrderItemsController",

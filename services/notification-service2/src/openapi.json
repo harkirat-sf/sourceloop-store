@@ -34,7 +34,23 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NotificationExcluding_id_"
+                "type": "object",
+                "required": [
+                  "to",
+                  "subject",
+                  "content"
+                ],
+                "properties": {
+                  "to": {
+                    "type": "string"
+                  },
+                  "subject": {
+                    "type": "string"
+                  },
+                  "content": {
+                    "type": "string"
+                  }
+                }
               }
             }
           }
@@ -132,40 +148,6 @@
           "type"
         ],
         "additionalProperties": false
-      },
-      "NotificationExcluding_id_": {
-        "title": "NotificationExcluding_id_",
-        "type": "object",
-        "description": "(tsType: Omit<Notification, 'id'>, schemaOptions: { exclude: [ 'id' ] })",
-        "properties": {
-          "subject": {
-            "type": "string",
-            "nullable": true
-          },
-          "body": {
-            "type": "string"
-          },
-          "receiver": {
-            "type": "object"
-          },
-          "type": {
-            "type": "number"
-          },
-          "sentDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "options": {
-            "type": "object"
-          }
-        },
-        "required": [
-          "body",
-          "receiver",
-          "type"
-        ],
-        "additionalProperties": false,
-        "x-typescript-type": "Omit<Notification, 'id'>"
       },
       "PingResponse": {
         "type": "object",
