@@ -8,7 +8,7 @@ const repository_1 = require("@loopback/repository");
 const moment_1 = __importDefault(require("moment"));
 function FormattedDate(format = 'YYYY-MM-DD HH:mm:ss', params) {
     return function (target, propertyKey) {
-        const internalKey = `${propertyKey}`;
+        const internalKey = `__${propertyKey}`;
         // Define the actual persisted property with @property
         (0, repository_1.property)(params)(target, internalKey);
         // Define a virtual property for access with formatting

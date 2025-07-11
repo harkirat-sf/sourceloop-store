@@ -17,7 +17,7 @@
         "tags": [
           "StoreController"
         ],
-        "description": "\n\n| Permissions |\n| ------- |\n| GET_STORE   |\n",
+        "description": "\n\n| Permissions |\n| ------- |\n| GET_PRODUCTS   |\n",
         "responses": {
           "200": {
             "description": "Return value of StoreController.getProducts",
@@ -44,40 +44,31 @@
         "operationId": "StoreController.getGlobalData"
       }
     },
-    "/collectUserData/{id}": {
+    "/collectUserData": {
       "get": {
         "x-controller-name": "StoreController",
         "x-operation-name": "getUserInfo",
         "tags": [
           "StoreController"
         ],
-        "description": "",
+        "description": "\n\n| Permissions |\n| ------- |\n| GET_USER_CART   |\n",
         "responses": {
           "200": {
             "description": "Return value of StoreController.getUserInfo",
             "content": {}
           }
         },
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "schema": {
-              "type": "number"
-            },
-            "required": true
-          }
-        ],
         "operationId": "StoreController.getUserInfo"
       }
     },
     "/login": {
       "post": {
-        "x-controller-name": "StoreController",
+        "x-controller-name": "AuthController",
         "x-operation-name": "login",
         "tags": [
-          "StoreController"
+          "AuthController"
         ],
+        "security": [],
         "responses": {
           "200": {
             "description": "Login successful",
@@ -123,7 +114,7 @@
             }
           }
         },
-        "operationId": "StoreController.login"
+        "operationId": "AuthController.login"
       }
     },
     "/order": {
@@ -133,7 +124,7 @@
         "tags": [
           "StoreController"
         ],
-        "description": "\n\n| Permissions |\n| ------- |\n| CREATE_PRODUCT   |\n",
+        "description": "\n\n| Permissions |\n| ------- |\n| CREATE_ORDER   |\n",
         "responses": {
           "200": {
             "description": "Product model instance",

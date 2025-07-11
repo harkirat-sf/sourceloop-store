@@ -82,6 +82,7 @@
         "loopback4-helmet": "^7.0.3",
         "loopback4-ratelimiter": "^7.0.6",
         "packages-interfaces": "1.0.0",
+        "packages-helper": "1.0.0",
         "prom-client": "^14.2.0",
         "swagger-stats": "^0.99.5",
         "symlink-resolver": "0.2.1",
