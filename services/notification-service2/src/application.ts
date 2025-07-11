@@ -105,12 +105,12 @@ export class NotificationService2Application extends BootMixin(
       pool: true,
       maxConnections: 100,
       url: '',
-      host: 'sandbox.smtp.mailtrap.io',
-      port: 2525,
+      host: process.env.SMTP_HOST,
+      port: process.env.SMTP_PORT,
       secure: false,
       auth: {
-        user: '6f1bd8bb0c5270',
-        pass: '31c85e75cda994',
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASSWORD,
       },
       tls: {
         rejectUnauthorized: true,
