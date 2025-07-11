@@ -1,11 +1,11 @@
 import { Provider, inject } from '@loopback/core';
 import { Filter, juggler } from '@loopback/repository';
-import { OrderDto } from 'packages-interfaces';
 import { OrderDataSource } from '../datasources';
 import { getService } from '@loopback/service-proxy';
+import { Order } from '../models';
 
 export interface OrderService {
-  getOrders(filter?: string): Promise<Array<OrderDto>>;
+  getOrders(filter?: string): Promise<Array<Order>>;
   createOrder(order: any): Promise<any>;
   createOrderItems(items: any): Promise<any>;
 }

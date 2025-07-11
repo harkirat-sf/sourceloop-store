@@ -1,5 +1,5 @@
-import { OrderDto, ProductDto } from "packages-interfaces";
-import { EntitesDto, OrderItemProductDto } from "../controllers";
+import { Order } from "../models";
+import { Product } from "../models/product.model";
 
 export async function collectProductIds(orders: any): Promise<number[]> {
   const productIds: number[] = [];
@@ -14,12 +14,12 @@ export async function collectProductIds(orders: any): Promise<number[]> {
 }
 
 export async function mergeItemProducts(
-  orders: Array<OrderDto>,
-  products: Array<ProductDto>
-): Promise<EntitesDto[]> {
+  orders: Array<Order>,
+  products: Array<Product>
+): Promise<any[]> {
   const productMap = new Map(products.map(product => [product.id, product]));
-  const mergedOrders: EntitesDto[] = orders.map(order => {
-    const mergedItems: OrderItemProductDto[] = (order as EntitesDto).orderItems.map(item => {
+  const mergedOrders: any[] = orders.map(order => {
+    const mergedItems: any[] = (order as Order).orderItems.map(item => {
       const product = productMap.get(item.productId);
       return {
         ...item,

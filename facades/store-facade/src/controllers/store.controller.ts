@@ -1,6 +1,6 @@
 
 import { inject } from '@loopback/core';
-import { get, getModelSchemaRef, param, post, requestBody, response, SessionUserProfile } from '@loopback/rest';
+import { get, getModelSchemaRef, HttpErrors, param, post, requestBody, response, SessionUserProfile } from '@loopback/rest';
 import { authorize } from 'loopback4-authorization';
 import { UserDto, ProductDto, OrderDto, OrderItemDto } from "packages-interfaces"
 import { ExternalService, NotificationService, OrderService, ProductService, UserService } from '../services';
@@ -10,26 +10,14 @@ import { Product } from '../models/product.model';
 import { collectProductIds, mergeItemProducts } from '../helpers/store';
 import { ratelimit } from 'loopback4-ratelimiter';
 import { LocalUserProfileDto } from '@sourceloop/authentication-service';
+import { STATUS_CODE } from '@sourceloop/core';
+import { Order, User } from '../models';
 
-interface StoreDto {
-  products: ProductDto[],
-  orders: OrderDto[],
-  users: UserDto[],
+type StoreDto  = {
+  products: Product[],
+  orders: Order[],
+  users: User[],
 }
-
-export interface OrderItemProductDto extends OrderItemDto {
-  product?: ProductDto | null;
-}
-
-export interface EntitesDto extends OrderDto {
-  orderItems: OrderItemProductDto[]
-}
-
-interface UserInfoDto {
-  detail: UserDto,
-  entities?: EntitesDto[]
-}
-
 
 export class StoreController {
   constructor(
@@ -40,6 +28,56 @@ export class StoreController {
     @inject('services.Notification') protected notificationService: NotificationService,
   ) { }
 
+  @authorize({ permissions: ["*"] })
+  @post('/login', {
+    responses: {
+      [STATUS_CODE.OK]: {
+        description: 'Login successful',
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+              properties: {
+                access_token: { type: 'string' },
+              },
+            },
+          },
+        },
+      },
+      [STATUS_CODE.UNAUTHORISED]: {
+        description: 'Invalid credentials',
+      },
+      [STATUS_CODE.INTERNAL_SERVER_ERROR]: {
+        description: 'Internal server error',
+      },
+    }
+  })
+  async login(
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: {
+            type: 'object',
+            required: ['email', 'password'],
+            properties: {
+              email: { type: 'string' },
+              password: { type: 'string' },
+            },
+          },
+        },
+      },
+    })
+    payload: {
+      email: string;
+      password: string;
+    },
+  ): Promise<{ access_token: string }> {
+    try {
+      return this.userService.loginUser(payload);
+    } catch (err) {
+      throw new HttpErrors.InternalServerError('Login failed, please try again later');
+    }
+  }
 
   @authenticate(STRATEGY.BEARER, {
     passReqToCallback: true,
@@ -65,7 +103,7 @@ export class StoreController {
   @authorize({ permissions: ['*'] })
   @ratelimit(false) // no rate limit will be applied to it
   @get('/collectUserData/{id}')
-  async getUserInfo(@param.path.number('id') id: number,): Promise<UserInfoDto> {
+  async getUserInfo(@param.path.number('id') id: number,): Promise<any> {
     const userDetail = await this.userService.getUserDetail(id);
     const orderRawQuery = {
       where: {
@@ -197,7 +235,7 @@ export class StoreController {
     });
     await this.orderService.createOrderItems(orderItemsPayload);
     // Create notification
-     const notifcationPayload = {
+    const notifcationPayload = {
       to: currentUser?.email,
       subject: "New Order Created!",
       content: `New Order Added`
@@ -205,7 +243,6 @@ export class StoreController {
     await this.notificationService.notify(notifcationPayload)
     return orderEntity;
   }
-
 
 
   @authenticate(STRATEGY.BEARER, {

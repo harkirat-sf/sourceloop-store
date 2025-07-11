@@ -1,4 +1,4 @@
-import {ApplicationConfig, StoreFacadeApplication} from './application';
+import { ApplicationConfig, StoreFacadeApplication } from './application';
 
 export * from './application';
 
@@ -6,6 +6,11 @@ const PORT = 3000;
 
 export async function main(options: ApplicationConfig = {}) {
   const app = new StoreFacadeApplication(options);
+
+  app.bind('rest.cors.allowedOrigins').to('*');
+  app.bind('rest.cors.allowedMethods').to('*');
+  app.bind('rest.cors.allowedHeaders').to('*');
+
   await app.boot();
   await app.start();
 

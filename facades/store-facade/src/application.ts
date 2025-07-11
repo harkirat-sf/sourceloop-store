@@ -1,34 +1,31 @@
-import {BootMixin} from '@loopback/boot';
-import {ApplicationConfig} from '@loopback/core';
+import { BootMixin } from '@loopback/boot';
+import { ApplicationConfig } from '@loopback/core';
 import {
   RestExplorerBindings,
   RestExplorerComponent,
 } from '@loopback/rest-explorer';
 import * as dotenv from 'dotenv';
 import * as dotenvExt from 'dotenv-extended';
-import {AuthenticationBindings, AuthenticationComponent, Strategies} from 'loopback4-authentication';
+import { AuthenticationBindings, AuthenticationComponent, Strategies } from 'loopback4-authentication';
 import {
   AuthorizationBindings,
   AuthorizationComponent,
 } from 'loopback4-authorization';
-import {HelmetSecurityBindings} from 'loopback4-helmet';
-import {RateLimiterComponent, RateLimitSecurityBindings} from 'loopback4-ratelimiter';
+import { HelmetSecurityBindings } from 'loopback4-helmet';
+import { RateLimiterComponent, RateLimitSecurityBindings } from 'loopback4-ratelimiter';
 import {
   CoreComponent,
   SecureSequence,
   rateLimitKeyGen,
-  AuthCacheSourceName,
   SFCoreBindings,
   BearerVerifierBindings,
   BearerVerifierComponent,
   BearerVerifierConfig,
-  BearerVerifierType,
-  SECURITY_SCHEME_SPEC,
-  CasbinSecureSequence,
+  BearerVerifierType
 } from '@sourceloop/core';
-import {RepositoryMixin} from '@loopback/repository';
-import {RestApplication} from '@loopback/rest';
-import {ServiceMixin} from '@loopback/service-proxy';
+import { RepositoryMixin } from '@loopback/repository';
+import { RestApplication } from '@loopback/rest';
+import { ServiceMixin } from '@loopback/service-proxy';
 import path from 'path';
 import * as openapi from './openapi.json';
 import { User } from './models';
@@ -36,7 +33,7 @@ import { MySequence } from './sequence';
 import { BearerTokenVerifyProvider } from './providers/bearer-token-verifier';
 import { AuthServiceBindings } from '@sourceloop/authentication-service';
 
-export {ApplicationConfig};
+export { ApplicationConfig };
 
 export class StoreFacadeApplication extends BootMixin(
   ServiceMixin(RepositoryMixin(RestApplication)),
@@ -53,6 +50,13 @@ export class StoreFacadeApplication extends BootMixin(
     options.rest.basePath = process.env.BASE_PATH ?? '';
     options.rest.port = +(process.env.PORT ?? port);
     options.rest.host = process.env.HOST;
+    options.rest.cors = {
+      origin: "*", 
+      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTION', 
+      allowedHeaders: '*',
+      preflightContinue: false,  
+      credentials: true
+    };
     options.rest.openApiSpec = {
       endpointMapping: {
         [`${options.rest.basePath}/openapi.json`]: {
@@ -61,6 +65,7 @@ export class StoreFacadeApplication extends BootMixin(
         },
       },
     };
+    
 
     super(options);
 
@@ -69,15 +74,15 @@ export class StoreFacadeApplication extends BootMixin(
     // To check if authorization is enabled for swagger stats or not
     const authentication =
       process.env.SWAGGER_USER && process.env.SWAGGER_PASSWORD ? true : false;
-      const obj={
-        enableObf,
-        obfPath: process.env.OBF_PATH ?? '/obf',
-        openapiSpec: openapi,
-        authentication: authentication,
-        swaggerUsername: process.env.SWAGGER_USER,
-        swaggerPassword: process.env.SWAGGER_PASSWORD,
-        
-      }
+    const obj = {
+      enableObf,
+      obfPath: process.env.OBF_PATH ?? '/obf',
+      openapiSpec: openapi,
+      authentication: authentication,
+      swaggerUsername: process.env.SWAGGER_USER,
+      swaggerPassword: process.env.SWAGGER_PASSWORD,
+
+    }
     this.bind(SFCoreBindings.config).to(obj);
     this.component(CoreComponent);
 
@@ -102,17 +107,17 @@ export class StoreFacadeApplication extends BootMixin(
     });
 
 
-     this.bind(RateLimitSecurityBindings.CONFIG).to({
+    this.bind(RateLimitSecurityBindings.CONFIG).to({
       name: "AuthDB",
-       type: 'RedisStore',
+      type: 'RedisStore',
       max: parseInt(process.env.RATE_LIMIT_REQUEST_CAP || "100"),
       keyGenerator: rateLimitKeyGen,
     });
 
     this.component(RateLimiterComponent);
-   
+
     this.bind(AuthServiceBindings.Config).to({
-      useCustomSequence:true,
+      useCustomSequence: true,
       useSymmetricEncryption: true,
     });
 
@@ -124,23 +129,23 @@ export class StoreFacadeApplication extends BootMixin(
     );
 
 
-     this.sequence(MySequence);
+    this.sequence(MySequence);
 
     // Add bearer verifier component
     this.bind(BearerVerifierBindings.Config).to({
       type: BearerVerifierType.facade,
-      useSymmetricEncryption:true,
+      useSymmetricEncryption: true,
     } as BearerVerifierConfig);
-    
+
     this.component(BearerVerifierComponent);
     // Add authorization component
- 
+
     this.bind(AuthorizationBindings.CONFIG).to({
       allowAlwaysPaths: ['/explorer', '/openapi.json'],
     });
 
     this.component(AuthorizationComponent);
-   
+
 
     // Set up default home page
     this.static('/', path.join(__dirname, '../public'));
@@ -151,7 +156,6 @@ export class StoreFacadeApplication extends BootMixin(
     });
 
     this.component(RestExplorerComponent);
-
 
     this.projectRoot = __dirname;
     // Customize @loopback/boot Booter Conventions here
@@ -172,9 +176,20 @@ export class StoreFacadeApplication extends BootMixin(
       },
       paths: {},
       components: {
-        securitySchemes: SECURITY_SCHEME_SPEC,
+        securitySchemes: {
+          bearerAuth: {
+            type: 'http',
+            scheme: 'bearer',
+            bearerFormat: 'JWT', // optional
+          },
+        },
       },
-      servers: [{url: '/'}],
+      security: [
+        {
+          bearerAuth: [],
+        },
+      ],
+      servers: [{ url: '/' }],
     });
   }
 }

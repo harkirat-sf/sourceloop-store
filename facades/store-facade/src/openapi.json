@@ -71,6 +71,61 @@
         "operationId": "StoreController.getUserInfo"
       }
     },
+    "/login": {
+      "post": {
+        "x-controller-name": "StoreController",
+        "x-operation-name": "login",
+        "tags": [
+          "StoreController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Login successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "access_token": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid credentials"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "description": "",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "password"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "StoreController.login"
+      }
+    },
     "/order": {
       "post": {
         "x-controller-name": "StoreController",
@@ -215,7 +270,7 @@
   },
   "components": {
     "securitySchemes": {
-      "HTTPBearer": {
+      "bearerAuth": {
         "type": "http",
         "scheme": "bearer",
         "bearerFormat": "JWT"
@@ -308,6 +363,11 @@
       }
     }
   },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
   "servers": [
     {
       "url": "/"

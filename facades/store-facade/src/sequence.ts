@@ -6,6 +6,7 @@ import { AuthorizeErrorKeys, AuthorizeFn } from "loopback4-authorization";
 import { RolePermissions } from "./mapper/RoleMapper";
 import { UserRole } from "./enums/Role";
 import { RateLimitAction, RateLimitSecurityBindings } from "loopback4-ratelimiter";
+import cors from 'cors';
 
 export class MySequence implements SequenceHandler {
   constructor(
@@ -20,33 +21,44 @@ export class MySequence implements SequenceHandler {
     protected authenticateRequest: AuthenticateFn<AuthUser>,
     @inject(AuthorizationBindings.AUTHORIZE_ACTION)
     protected checkAuthorisation: AuthorizeFn,
-  ) {}
+  ) { }
 
   async handle(context: RequestContext) {
     try {
-      const {request, response} = context;
+      const { request, response } = context;
 
-      const route = this.findRoute(request);
-      const args = await this.parseParams(request, route);
+      response.header('Access-Control-Allow-Origin', '*');
+      response.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
 
-            // rate limit Action here
-      await this.rateLimitAction(request, response);
 
-      request.body = args[args.length - 1];
-      // console.log("______>")
-      const authUser: AuthUser = await this.authenticateRequest(request, response);
-      const userPermissions = RolePermissions[authUser?.role as UserRole] ?? [];
-      const isAccessAllowed: boolean = await this.checkAuthorisation(
-        userPermissions,
-        request,
-      );
+      if (request.method == 'OPTIONS') {
+        response.status(200)
+        this.send(response, 'ok');
+      } else {
+        const route = this.findRoute(request);
+        const args = await this.parseParams(request, route);
 
-      if (!isAccessAllowed) {
-        throw new HttpErrors.Forbidden(AuthorizeErrorKeys.NotAllowedAccess);
+        // rate limit Action here
+        await this.rateLimitAction(request, response);
+
+        request.body = args[args.length - 1];
+        // console.log("______>")
+        const authUser: AuthUser = await this.authenticateRequest(request, response);
+        const userPermissions = RolePermissions[authUser?.role as UserRole] ?? [];
+        const isAccessAllowed: boolean = await this.checkAuthorisation(
+          userPermissions,
+          request,
+        );
+
+        if (!isAccessAllowed) {
+          throw new HttpErrors.Forbidden(AuthorizeErrorKeys.NotAllowedAccess);
+        }
+
+        const result = await this.invoke(route, args);
+        this.send(response, result);
       }
 
-      const result = await this.invoke(route, args);
-      this.send(response, result);
+
     } catch (err) {
       this.reject(context, err);
     }

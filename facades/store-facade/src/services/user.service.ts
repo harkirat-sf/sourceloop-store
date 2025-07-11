@@ -3,10 +3,17 @@ import { juggler } from '@loopback/repository';
 import { UserDto } from 'packages-interfaces';
 import { UserDataSource } from '../datasources';
 import { getService } from '@loopback/service-proxy';
+import { User } from '../models';
+
+type LoginDto = {
+  email: string,
+  password: string
+}
 
 export interface UserService {
-  getUsers(): Promise<Array<UserDto>>;
-  getUserDetail(id: number): Promise<UserDto>;
+  getUsers(): Promise<Array<User>>;
+  getUserDetail(id: number): Promise<User>;
+  loginUser(email: LoginDto): Promise<{access_token: string}>;
 }
 
 export class UserProvider implements Provider<UserService> {

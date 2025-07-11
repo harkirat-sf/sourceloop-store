@@ -29,6 +29,16 @@ const config = {
       functions: {
         getUserDetail: ["id"],
       },
+    },
+    {
+      template: {
+        method: 'POST',
+        url: `${process.env.USER_SERVICE}users/login`,
+        body: "{body}"
+      },
+      functions: {
+        loginUser: ["body"],
+      },
     }
   ],
 };

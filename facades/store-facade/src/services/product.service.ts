@@ -1,12 +1,11 @@
 import { Provider, inject } from '@loopback/core';
 import { juggler } from '@loopback/repository';
-import { ProductDto } from 'packages-interfaces';
 import { ProductDataSource } from '../datasources';
 import { getService } from '@loopback/service-proxy';
 import { Product } from '../models/product.model';
 
 export interface ProductService {
-  getProducts(filter?: string): Promise<Array<ProductDto>>;
+  getProducts(filter?: string): Promise<Array<Product>>;
   createProduct(product: Omit<Product, 'id'>): Promise<Product>;
 }
 
