@@ -3,7 +3,7 @@ import { inject } from '@loopback/core';
 import { get, getModelSchemaRef, param, post, requestBody, response, SessionUserProfile } from '@loopback/rest';
 import { authorize } from 'loopback4-authorization';
 import { UserDto, ProductDto, OrderDto, OrderItemDto } from "packages-interfaces"
-import { NotificationService, OrderService, ProductService, UserService } from '../services';
+import { ExternalService, NotificationService, OrderService, ProductService, UserService } from '../services';
 import { authenticate, AuthenticationBindings, STRATEGY } from 'loopback4-authentication';
 import { Permission } from '../enums/Permission';
 import { Product } from '../models/product.model';
@@ -35,6 +35,7 @@ export class StoreController {
   constructor(
     @inject('services.User') protected userService: UserService,
     @inject('services.Product') protected productService: ProductService,
+    @inject('services.External') protected externalService: ExternalService,
     @inject('services.Order') protected orderService: OrderService,
     @inject('services.Notification') protected notificationService: NotificationService,
   ) { }
@@ -204,6 +205,25 @@ export class StoreController {
     await this.notificationService.notify(notifcationPayload)
     return orderEntity;
   }
+
+
+
+  @authenticate(STRATEGY.BEARER, {
+    passReqToCallback: true,
+  })
+  @authorize({ permissions: [Permission.GET_STORE] })
+  @get('/collectAllProducts')
+  async getProducts(): Promise<any> {
+    const [inventory, external] = await Promise.all([
+      this.productService.getProducts(),
+      this.externalService.getExternalProducts(),
+    ]);
+    return {
+      inventory,
+      external
+    };
+  }
+
 }
 
 

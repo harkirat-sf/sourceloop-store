@@ -25,6 +25,7 @@ module.exports = {
   ],
 
   scopes: [
+{name: 'external-service-service'}, 
 {name: 'notification-service2-service'}, 
 {name: 'notification-service-service'}, 
 {name: 'notification-service-service'}, 

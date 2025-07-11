@@ -10,6 +10,23 @@
     }
   },
   "paths": {
+    "/collectAllProducts": {
+      "get": {
+        "x-controller-name": "StoreController",
+        "x-operation-name": "getProducts",
+        "tags": [
+          "StoreController"
+        ],
+        "description": "\n\n| Permissions |\n| ------- |\n| GET_STORE   |\n",
+        "responses": {
+          "200": {
+            "description": "Return value of StoreController.getProducts",
+            "content": {}
+          }
+        },
+        "operationId": "StoreController.getProducts"
+      }
+    },
     "/collectStore": {
       "get": {
         "x-controller-name": "StoreController",
