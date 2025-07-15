@@ -5,6 +5,7 @@ import { User, UserRelations } from '../models';
 import * as bcrypt from "bcrypt"
 import { HttpErrors } from '@loopback/rest';
 import jwt from "jsonwebtoken";
+import { RolePermissions, UserRole } from "packages-helper";
 
 export class UserRepository extends DefaultCrudRepository<
   User,
@@ -35,12 +36,14 @@ export class UserRepository extends DefaultCrudRepository<
     const isVerified = await bcrypt.compare(password, user.password as string);
     if (!isVerified) throw new HttpErrors[401];
 
+    const userPermissions = RolePermissions[user?.role as UserRole] ?? [];
+
     // generate new jwt token
     const payload = {
       id: user?.id,
       email: user?.email,
       role: user?.role,
-      permissions: ["CreateNotification"]
+      permissions: userPermissions
     }
 
     const options = {

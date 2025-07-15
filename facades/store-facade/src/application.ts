@@ -129,7 +129,7 @@ export class StoreFacadeApplication extends BootMixin(
     );
 
 
-    this.sequence(MySequence);
+    // this.sequence(MySequence);
 
     // Add bearer verifier component
     this.bind(BearerVerifierBindings.Config).to({

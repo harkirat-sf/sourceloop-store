@@ -4,14 +4,14 @@ import { get, getModelSchemaRef, HttpErrors, param, post, requestBody, response 
 import { authorize } from 'loopback4-authorization';
 import { ExternalService, NotificationService, OrderService, ProductService, UserService } from '../services';
 import { authenticate, AuthenticationBindings, STRATEGY } from 'loopback4-authentication';
-import { Permission } from '../enums/Permission';
+// import { Permission } from '../enums/Permission';
 import { Product } from '../models/product.model';
 import { collectProductIds, mergeItemProducts } from '../helpers/store';
 import { ratelimit } from 'loopback4-ratelimiter';
 import { LocalUserProfileDto } from '@sourceloop/authentication-service';
 import { STATUS_CODE } from '@sourceloop/core';
 import { Order, User } from '../models';
-import { safeFetch } from "packages-helper";
+import { Permission, safeFetch } from "packages-helper";
 type StoreDto = {
   products: Product[],
   orders: Order[],

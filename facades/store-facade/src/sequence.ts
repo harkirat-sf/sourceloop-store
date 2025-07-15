@@ -3,8 +3,8 @@ import { FindRoute, HttpErrors, InvokeMethod, ParseParams, Reject, RequestContex
 import { AuthorizationBindings, AuthUser } from "@sourceloop/authentication-service";
 import { AuthenticateFn, AuthenticationBindings } from "loopback4-authentication";
 import { AuthorizeErrorKeys, AuthorizeFn } from "loopback4-authorization";
-import { RolePermissions } from "./mapper/RoleMapper";
-import { UserRole } from "./enums/Role";
+// import { RolePermissions } from "./mapper/RoleMapper";
+// import { UserRole } from "./enums/Role";
 import { RateLimitAction, RateLimitSecurityBindings } from "loopback4-ratelimiter";
 import cors from 'cors';
 
@@ -44,21 +44,17 @@ export class MySequence implements SequenceHandler {
         request.body = args[args.length - 1];
         // console.log("______>")
         const authUser: AuthUser = await this.authenticateRequest(request, response);
-        const userPermissions = RolePermissions[authUser?.role as UserRole] ?? [];
+        // const userPermissions = RolePermissions[authUser?.role as UserRole] ?? [];
         const isAccessAllowed: boolean = await this.checkAuthorisation(
-          userPermissions,
+          [],
           request,
         );
-
         if (!isAccessAllowed) {
           throw new HttpErrors.Forbidden(AuthorizeErrorKeys.NotAllowedAccess);
         }
-
         const result = await this.invoke(route, args);
         this.send(response, result);
       }
-
-
     } catch (err) {
       this.reject(context, err);
     }
